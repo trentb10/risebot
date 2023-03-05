@@ -4,5 +4,6 @@ appsettings.json
 bin/
 config/
 node_modules/
+obj/
 .vs/
 .vscode/
