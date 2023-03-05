@@ -1,0 +1,8 @@
+# GitIgnore file for the d_matrix git repository
+
+appsettings.json
+bin/
+config/
+node_modules/
+.vs/
+.vscode/
