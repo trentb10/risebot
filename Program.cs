@@ -21,7 +21,7 @@ namespace d_matrix
       (
         File.ReadAllText("config\\appsettings.json")
       );
-      string discordKey = keys.discordKey.DMatrixKey;
+      string discordKey = keys.discordKey.RisebotKey;
 
       var discord = new DiscordClient(new DiscordConfiguration()
       {
