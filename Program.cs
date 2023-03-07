@@ -41,6 +41,7 @@ namespace d_matrix
       });
 
       commands.RegisterCommands<General>();
+      commands.RegisterCommands<TestCommands>();
       
       await discord.ConnectAsync();
       await Task.Delay(-1);
