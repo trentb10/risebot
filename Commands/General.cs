@@ -1,5 +1,6 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
 using Newtonsoft.Json;
 
 public class General : BaseCommandModule
@@ -23,7 +24,7 @@ public class General : BaseCommandModule
     // ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=rj&api_key=YOUR_API_KEY&format=json
 
     // Get API key
-    LastFMKey lastfmKey = JsonConvert.DeserializeObject<LastFMKey>
+    ApiKeyring lastfmKey = JsonConvert.DeserializeObject<ApiKeyring>
     (
       File.ReadAllText("config\\apikeys.json")
     );
@@ -31,19 +32,27 @@ public class General : BaseCommandModule
     // Declare urls for api call
     string paramMethod = "user.getrecenttracks",
            paramUser = "&user=tm206",
-           paramApiKey = $"&api_key={lastfmKey.key}";
+           paramApiKey = $"&api_key={lastfmKey.apiKey.lastfm}";
 
     // Request data
     try 
     {
       using HttpResponseMessage res = await client.GetAsync
       (
-        lastfmURL + paramMethod + paramUser + paramApiKey
+        lastfmURL + paramMethod + paramUser + paramApiKey + "&format=json"
       );
       res.EnsureSuccessStatusCode();
       string resData = await res.Content.ReadAsStringAsync();
 
       LastFM_User_RecentTracks tracks = JsonConvert.DeserializeObject<LastFM_User_RecentTracks>(resData);
+
+      var currentTrack = tracks.recenttracks.track[0];
+
+      DiscordEmbedBuilder em = new DiscordEmbedBuilder{
+        Description = $"**{currentTrack.name}** - {currentTrack.artist.text}"
+      };
+
+      await ctx.Channel.SendMessageAsync(em);
     } 
     catch (HttpRequestException e)
     {
