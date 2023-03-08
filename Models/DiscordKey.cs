@@ -1,6 +1,6 @@
 public class DiscordKey
 {
-  public string DMatrixKey { get; set; }
+  public string RisebotKey { get; set; }
 }
 
 public class DiscordKeys

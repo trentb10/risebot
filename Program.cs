@@ -4,7 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext.Exceptions;
 using Newtonsoft.Json;
 
-namespace d_matrix
+namespace risebot
 {
   class Program
   {
@@ -21,7 +21,7 @@ namespace d_matrix
       (
         File.ReadAllText("config\\appsettings.json")
       );
-      string discordKey = keys.discordKey.DMatrixKey;
+      string discordKey = keys.discordKey.RisebotKey;
 
       var discord = new DiscordClient(new DiscordConfiguration()
       {
