@@ -4,7 +4,7 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext.Exceptions;
 using Newtonsoft.Json;
 
-namespace d_matrix
+namespace risebot
 {
   class Program
   {
