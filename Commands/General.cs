@@ -46,10 +46,24 @@ public class General : BaseCommandModule
 
       LastFM_User_RecentTracks tracks = JsonConvert.DeserializeObject<LastFM_User_RecentTracks>(resData);
 
+      // Get latest track aka now playing
       var currentTrack = tracks.recenttracks.track[0];
 
+      // Get album cover
+      string albumCoverURL = "";
+      
+      foreach (var a in currentTrack.image)
+      {
+        albumCoverURL = a.text;
+      }
+
       DiscordEmbedBuilder em = new DiscordEmbedBuilder{
-        Description = $"**{currentTrack.name}** - {currentTrack.artist.text}"
+        Title = "tm206's Now Playing",
+        Description = $"**{currentTrack.name}** - {currentTrack.artist.text}",
+        Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
+        {
+          Url = albumCoverURL
+        }
       };
 
       await ctx.Channel.SendMessageAsync(em);

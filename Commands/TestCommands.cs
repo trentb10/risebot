@@ -16,10 +16,24 @@ public class TestCommands : BaseCommandModule
     
     var track = sampledata.recenttracks.track[0];
 
+    // Get album cover
+    string albumCoverURL = "";
+
+    foreach (var a in track.image)
+    {
+      albumCoverURL = a.text;
+    }
+
     DiscordEmbedBuilder em = new DiscordEmbedBuilder
     {
-      Description = $"**{track.name}** - {track.artist.text}"
+      Title = "tm206's Now Playing",
+      Description = $"**{track.name}** - {track.artist.text}",
+      Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
+      {
+        Url = albumCoverURL
+      }
     };
+    
 
     await ctx.Channel.SendMessageAsync(em);
   }
