@@ -57,16 +57,18 @@ public class General : BaseCommandModule
         albumCoverURL = a.text;
       }
 
-      DiscordEmbedBuilder em = new DiscordEmbedBuilder{
-        Title = "tm206's Now Playing",
-        Description = $"**{currentTrack.name}** - {currentTrack.artist.text}",
-        Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
-        {
-          Url = albumCoverURL
-        }
-      };
+      // Build embed
+      CurrentTrackEmbed em = new CurrentTrackEmbed();
 
-      await ctx.Channel.SendMessageAsync(em);
+      await ctx.Channel.SendMessageAsync(
+        em.SendCurrentTrack(
+          currentTrack.name,
+          currentTrack.artist.text,
+          currentTrack.album.text,
+          albumCoverURL
+        )
+      );
+      
     } 
     catch (HttpRequestException e)
     {

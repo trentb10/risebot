@@ -23,18 +23,18 @@ public class TestCommands : BaseCommandModule
     {
       albumCoverURL = a.text;
     }
+      
+      // Build embed
+      CurrentTrackEmbed em = new CurrentTrackEmbed();
 
-    DiscordEmbedBuilder em = new DiscordEmbedBuilder
-    {
-      Title = "tm206's Now Playing",
-      Description = $"**{track.name}** - {track.artist.text}",
-      Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
-      {
-        Url = albumCoverURL
-      }
-    };
-    
+      await ctx.Channel.SendMessageAsync(
+        em.SendCurrentTrack(
+          track.name, 
+          track.artist.text,
+          track.album.text,
+          albumCoverURL
+        )
+      );
 
-    await ctx.Channel.SendMessageAsync(em);
   }
 }

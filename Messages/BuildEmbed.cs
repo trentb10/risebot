@@ -2,7 +2,7 @@ using DSharpPlus.Entities;
 
 public class Embed
 {
-  public DiscordEmbedBuilder BuildEmbedSimple(
+  public DiscordEmbedBuilder BuildEmbed(
     DiscordEmbedBuilder embed
   ){
     embed.Build();
@@ -20,6 +20,32 @@ public class GenericEmbed : Embed
       Description = msg.Description
     };
 
-    return BuildEmbedSimple(embed);
+    return BuildEmbed(embed);
+  }
+}
+
+
+public class CurrentTrackEmbed : Embed
+{
+  public DiscordEmbedBuilder SendCurrentTrack
+  (
+    string trackTitle,
+    string trackArtist,
+    string trackAlbum,
+    string trackAlbumArtURL
+  ){
+    DiscordEmbedBuilder embed = new DiscordEmbedBuilder
+    {
+      Title = "x's Now Playing"
+    }
+      .AddField("Title", trackTitle, true)
+      .AddField("Artist", trackArtist, true)
+      .AddField("Album", trackAlbum, true);
+    embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
+    {
+      Url = trackAlbumArtURL
+    };
+    
+    return BuildEmbed(embed);
   }
 }
