@@ -38,10 +38,10 @@ public class CurrentTrackEmbed : Embed
   ){
     DiscordEmbedBuilder embed = new DiscordEmbedBuilder
     {
-      Title = trackTitle
+      Title = trackTitle,
+      Description = $"**{trackArtist}**\n{trackAlbum}"
     }
-      .WithAuthor($"{userName}'s Now Playing", null, userIcon)
-      .AddField(trackArtist, $"*{trackAlbum}*", false);
+      .WithAuthor($"{userName}'s Now Playing", null, userIcon);
       
     embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
     {
