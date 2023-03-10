@@ -10,6 +10,11 @@ public class TestCommands : BaseCommandModule
   [Command("testnp")]
   public async Task DTestNP(CommandContext ctx)
   {
+    // Get user information
+    string userName = ctx.Message.Author.Username;
+    string userIcon = ctx.Message.Author.AvatarUrl;
+
+    // Get current track
     string path = "SampleData\\tm206-recentlyplayed.json";
     var sampleData = File.ReadAllText(path);
     LastFM_User_RecentTracks sampledata = JsonConvert.DeserializeObject<LastFM_User_RecentTracks>(sampleData);
@@ -29,6 +34,8 @@ public class TestCommands : BaseCommandModule
 
       await ctx.Channel.SendMessageAsync(
         em.SendCurrentTrack(
+          userName,
+          userIcon,
           track.name, 
           track.artist.text,
           track.album.text,

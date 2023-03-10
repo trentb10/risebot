@@ -37,6 +37,11 @@ public class General : BaseCommandModule
     // Request data
     try 
     {
+      // Get user information
+      string userName = ctx.Message.Author.Username;
+      string userIcon = ctx.Message.Author.AvatarUrl;
+
+      // Get latest track aka now playing
       using HttpResponseMessage res = await client.GetAsync
       (
         lastfmURL + paramMethod + paramUser + paramApiKey + "&format=json"
@@ -45,8 +50,7 @@ public class General : BaseCommandModule
       string resData = await res.Content.ReadAsStringAsync();
 
       LastFM_User_RecentTracks tracks = JsonConvert.DeserializeObject<LastFM_User_RecentTracks>(resData);
-
-      // Get latest track aka now playing
+      
       var currentTrack = tracks.recenttracks.track[0];
 
       // Get album cover
@@ -62,6 +66,8 @@ public class General : BaseCommandModule
 
       await ctx.Channel.SendMessageAsync(
         em.SendCurrentTrack(
+          userName,
+          userIcon,
           currentTrack.name,
           currentTrack.artist.text,
           currentTrack.album.text,

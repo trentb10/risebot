@@ -29,6 +29,8 @@ public class CurrentTrackEmbed : Embed
 {
   public DiscordEmbedBuilder SendCurrentTrack
   (
+    string userName,
+    string userIcon,
     string trackTitle,
     string trackArtist,
     string trackAlbum,
@@ -36,11 +38,11 @@ public class CurrentTrackEmbed : Embed
   ){
     DiscordEmbedBuilder embed = new DiscordEmbedBuilder
     {
-      Title = "x's Now Playing"
+      Title = trackTitle
     }
-      .AddField("Title", trackTitle, true)
-      .AddField("Artist", trackArtist, true)
-      .AddField("Album", trackAlbum, true);
+      .WithAuthor($"{userName}'s Now Playing", null, userIcon)
+      .AddField(trackArtist, $"*{trackAlbum}*", false);
+      
     embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
     {
       Url = trackAlbumArtURL
