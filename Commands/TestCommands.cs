@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 public class TestCommands : BaseCommandModule
 {
   [Command("testnp")]
-  public async Task DTestNP(CommandContext ctx)
+  public async Task RTestNP(CommandContext ctx)
   {
     // Get user information
     string userName = ctx.Message.Author.Username;

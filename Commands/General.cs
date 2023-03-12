@@ -10,7 +10,7 @@ public class General : BaseCommandModule
   private const string lastfmURL = "http://ws.audioscrobbler.com/2.0/?method=";
 
   [Command("greet")]
-  public async Task DGreet(CommandContext ctx)
+  public async Task RGreet(CommandContext ctx)
   {
     GenericEmbed em = new GenericEmbed();
     await ctx.Channel.SendMessageAsync(
@@ -20,7 +20,7 @@ public class General : BaseCommandModule
 
   [Command("nowplaying")]
   [Aliases("np")]
-  public async Task DNowPlaying(CommandContext ctx)
+  public async Task RNowPlaying(CommandContext ctx)
   {
     // ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=rj&api_key=YOUR_API_KEY&format=json
 
