@@ -44,4 +44,14 @@ public class TestCommands : BaseCommandModule
       );
 
   }
+
+  public async Task RTestTopTracks(CommandContext ctx)
+  {
+    // Get user information
+    string userName = ctx.Message.Author.Username;
+    string userIcon = ctx.Message.Author.AvatarUrl;
+
+    // Get top tracks
+    
+  }
 }
