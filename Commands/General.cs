@@ -19,6 +19,7 @@ public class General : BaseCommandModule
   }
 
   [Command("nowplaying")]
+  [Aliases("np")]
   public async Task DNowPlaying(CommandContext ctx)
   {
     // ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=rj&api_key=YOUR_API_KEY&format=json
