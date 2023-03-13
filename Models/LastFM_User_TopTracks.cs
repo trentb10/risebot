@@ -1,13 +1,13 @@
 using Newtonsoft.Json;
 
-public class Artist
+public class TopTracks_Artist
 {
   public string url { get; set; }
   public string name { get; set; }
   public string mbid { get; set; }
 }
 
-public class Attr
+public class TopTracks_Attr
 {
   public string rank { get; set; }
   public string user { get; set; }
@@ -17,7 +17,7 @@ public class Attr
   public string total { get; set; }
 }
 
-public class Image
+public class TopTracks_Image
 {
   public string size { get; set; }
 
@@ -25,7 +25,7 @@ public class Image
   public string text { get; set; }
 }
 
-public class Streamable
+public class TopTracks_Streamable
 {
   public string fulltrack { get; set; }
 
@@ -33,27 +33,27 @@ public class Streamable
   public string text { get; set; }
 }
 
-public class Toptracks
+public class TopTracks_Track
 {
-  public List<Track> track { get; set; }
-
-  [JsonProperty("@attr")]
-  public Attr attr { get; set; }
-}
-
-public class Track
-{
-  public Streamable streamable { get; set; }
+  public TopTracks_Streamable streamable { get; set; }
   public string mbid { get; set; }
   public string name { get; set; }
-  public List<Image> image { get; set; }
-  public Artist artist { get; set; }
+  public List<TopTracks_Image> image { get; set; }
+  public TopTracks_Artist artist { get; set; }
   public string url { get; set; }
   public string duration { get; set; }
 
   [JsonProperty("@attr")]
-  public Attr attr { get; set; }
+  public TopTracks_Attr attr { get; set; }
   public string playcount { get; set; }
+}
+
+public class Toptracks
+{
+  public List<TopTracks_Track> track { get; set; }
+
+  [JsonProperty("@attr")]
+  public TopTracks_Attr attr { get; set; }
 }
 
 public class LastFM_User_TopTracks

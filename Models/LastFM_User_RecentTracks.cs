@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 
 //LastFM_User_RecentTracks myDeserializedClass = JsonConvert.DeserializeObject<LastFM_User_RecentTracks>(myJsonResponse);
-public class Album
+public class RecentTracks_Album
 {
   public string mbid { get; set; }
 
@@ -9,7 +9,7 @@ public class Album
   public string text { get; set; }
 }
 
-public class Artist
+public class RecentTracks_Artist
 {
   public string mbid { get; set; }
 
@@ -17,7 +17,7 @@ public class Artist
   public string text { get; set; }
 }
 
-public class Attr
+public class RecentTracks_Attr
 {
   public string user { get; set; }
   public string totalPages { get; set; }
@@ -26,7 +26,7 @@ public class Attr
   public string total { get; set; }
 }
 
-public class Date
+public class RecentTracks_Date
 {
   public string uts { get; set; }
 
@@ -34,7 +34,7 @@ public class Date
   public string text { get; set; }
 }
 
-public class Image
+public class RecentTracks_Image
 {
   public string size { get; set; }
 
@@ -42,24 +42,24 @@ public class Image
   public string text { get; set; }
 }
 
-public class Recenttracks
+public class RecentTracks_Track
 {
-  public List<Track> track { get; set; }
-
-  [JsonProperty("@attr")]
-  public Attr attr { get; set; }
-}
-
-public class Track
-{
-  public Artist artist { get; set; }
+  public RecentTracks_Artist artist { get; set; }
   public string streamable { get; set; }
-  public List<Image> image { get; set; }
+  public List<RecentTracks_Image> image { get; set; }
   public string mbid { get; set; }
-  public Album album { get; set; }
+  public RecentTracks_Album album { get; set; }
   public string name { get; set; }
   public string url { get; set; }
-  public Date date { get; set; }
+  public RecentTracks_Date date { get; set; }
+}
+
+public class Recenttracks
+{
+  public List<RecentTracks_Track> track { get; set; }
+
+  [JsonProperty("@attr")]
+  public RecentTracks_Attr attr { get; set; }
 }
 
 public class LastFM_User_RecentTracks
