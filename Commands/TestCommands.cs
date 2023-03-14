@@ -58,14 +58,16 @@ public class TestCommands : BaseCommandModule
     string path = "SampleData\\tm206-toptracks.json";
     var sampleData = File.ReadAllText(path);
     LastFM_User_TopTracks sampledata = JsonConvert.DeserializeObject<LastFM_User_TopTracks>(sampleData);
+    var track = sampledata.toptracks.track;
 
+    // Spotlight top track
+
+    string toptrack = $"**#1: {track[0].name} - {track[0].artist.name}** ({track[0].playcount} plays)";
     List<string> topTracks = new List<string>();
 
-    for(int i = 1; i <= 10; i++)
+    for(int i = 1; i < 10; i++)
     {
-      var track = sampledata.toptracks.track[i - 1];
-
-      string title = $"#{i}: {track.name} - {track.artist.name} ({track.playcount} plays)";
+      string title = $"**#{i+1}: {track[i].name} - {track[i].artist.name}** ({track[i].playcount} plays)";
       topTracks.Add(title);
     }
 
@@ -76,7 +78,26 @@ public class TestCommands : BaseCommandModule
       output.Append(i + "\n");
     }
 
-    await ctx.Channel.SendMessageAsync(output.ToString());
+    DiscordEmbedBuilder em = new DiscordEmbedBuilder
+    {
+      Title = toptrack,
+      Description = output.ToString()
+    }
+      .WithAuthor($"{userName}: Top Tracks All Time", null, ctx.Message.Author.AvatarUrl);
+
+    string albumCover = "";
+
+    foreach (var a in track[0].image)
+    {
+      albumCover = a.text;
+    }
+
+    em.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
+    {
+      Url = albumCover
+    };
+
+    await ctx.Channel.SendMessageAsync(em);
 
   }
 }
