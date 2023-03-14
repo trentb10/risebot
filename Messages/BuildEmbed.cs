@@ -39,8 +39,8 @@ public class CurrentTrackEmbed : Embed
   ){
     DiscordEmbedBuilder embed = new DiscordEmbedBuilder
     {
-      Title = trackTitle,
-      Description = $"**{trackArtist}**\n{trackAlbum}"
+      Title = $"{trackTitle} \u2013 {trackArtist}",
+      Description = trackAlbum
     }
       .WithAuthor($"{userName}'s Now Playing", null, userIcon);
       
@@ -71,7 +71,7 @@ public class TopTracksEmbed : Embed
       // List rest of tracks
       Description = topTracksList.ToString()
     }
-      .WithAuthor($"{userName}: Top Tracks, All Time", null, userIcon);
+      .WithAuthor($"{userName}'s Top 10 Tracks, All Time", null, userIcon);
 
     embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
     {

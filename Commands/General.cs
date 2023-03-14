@@ -120,7 +120,7 @@ public class General : BaseCommandModule
       var track = tracks.toptracks.track;
 
       // Spotlight top track
-      string toptrack = $"**1.\u0020\u0020{track[0].name} \u2013 {track[0].artist.name}** ({track[0].playcount} plays)";
+      string toptrack = $"**1\u0020|\u0020{track[0].name} \u2013 {track[0].artist.name}** ({track[0].playcount} plays)";
       
       string topTrackAlbumCover = "";
 
@@ -134,7 +134,7 @@ public class General : BaseCommandModule
 
       for(int i = 1; i < 10; i++)
       {
-        string title = $"**{i+1}.\u0020\u0020{track[i].name} \u2013 {track[i].artist.name}** ({track[i].playcount} plays)";
+        string title = $"**{i+1}\u0020|\u0020{track[i].name} \u2013 {track[i].artist.name}** ({track[i].playcount} plays)";
         topTracks.Add(title);
       }
 
