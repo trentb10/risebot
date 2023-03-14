@@ -65,39 +65,38 @@ public class TestCommands : BaseCommandModule
     string toptrack = $"**#1: {track[0].name} - {track[0].artist.name}** ({track[0].playcount} plays)";
     List<string> topTracks = new List<string>();
 
+    string topTrackAlbumCover = "";
+
+    foreach (var a in track[0].image)
+    {
+      topTrackAlbumCover = a.text;
+    }
+    
+    // Get rest of top tracks
+
     for(int i = 1; i < 10; i++)
     {
       string title = $"**#{i+1}: {track[i].name} - {track[i].artist.name}** ({track[i].playcount} plays)";
       topTracks.Add(title);
     }
 
-    StringBuilder output = new StringBuilder();
+    StringBuilder topTracksList = new StringBuilder();
 
     foreach (var i in topTracks)
     {
-      output.Append(i + "\n");
+      topTracksList.Append(i + "\n");
     }
 
-    DiscordEmbedBuilder em = new DiscordEmbedBuilder
-    {
-      Title = toptrack,
-      Description = output.ToString()
-    }
-      .WithAuthor($"{userName}: Top Tracks All Time", null, ctx.Message.Author.AvatarUrl);
+    // Build embed
+    TopTracksEmbed em = new TopTracksEmbed();
 
-    string albumCover = "";
-
-    foreach (var a in track[0].image)
-    {
-      albumCover = a.text;
-    }
-
-    em.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
-    {
-      Url = albumCover
-    };
-
-    await ctx.Channel.SendMessageAsync(em);
+    await ctx.Channel.SendMessageAsync(em.SendTopTracks(
+      userName,
+      userIcon,
+      toptrack,
+      topTrackAlbumCover,
+      topTracksList
+    ));
 
   }
 }

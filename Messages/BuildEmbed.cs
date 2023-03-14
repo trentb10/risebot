@@ -1,3 +1,4 @@
+using System.Text;
 using DSharpPlus.Entities;
 
 public class Embed
@@ -48,6 +49,35 @@ public class CurrentTrackEmbed : Embed
       Url = trackAlbumArtURL
     };
     
+    return BuildEmbed(embed);
+  }
+}
+
+public class TopTracksEmbed : Embed
+{
+  public DiscordEmbedBuilder SendTopTracks
+  (
+    string userName,
+    string userIcon,
+    string topTrackTitle,
+    string topTrackAlbumCover,
+    StringBuilder topTracksList
+  ){
+    DiscordEmbedBuilder embed = new DiscordEmbedBuilder
+    {
+      // Spotlight most played track
+      Title = topTrackTitle,
+
+      // List rest of tracks
+      Description = topTracksList.ToString()
+    }
+      .WithAuthor($"{userName}: Top Tracks, All Time", null, userIcon);
+
+    embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
+    {
+      Url = topTrackAlbumCover
+    };
+
     return BuildEmbed(embed);
   }
 }
