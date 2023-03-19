@@ -93,6 +93,8 @@ public class TestCommands : BaseCommandModule
     await ctx.Channel.SendMessageAsync(em.SendTopTracks(
       userName,
       userIcon,
+      "Top Tracks",
+      "All Time",
       toptrack,
       topTrackAlbumCover,
       topTracksList

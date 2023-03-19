@@ -59,23 +59,25 @@ public class TopTracksEmbed : Embed
   (
     string userName,
     string userIcon,
-    string topTrackTitle,
-    string topTrackAlbumCover,
-    StringBuilder topTracksList
+    string chartType,
+    string chartPeriod,
+    string topItemTitle,
+    string topItemImage,
+    StringBuilder topChartList
   ){
     DiscordEmbedBuilder embed = new DiscordEmbedBuilder
     {
-      // Spotlight most played track
-      Title = topTrackTitle,
+      // Spotlight top item
+      Title = topItemTitle,
 
-      // List rest of tracks
-      Description = topTracksList.ToString()
+      // List rest of chart
+      Description = topChartList.ToString()
     }
-      .WithAuthor($"{userName}'s Top 10 Tracks, All Time", null, userIcon);
+      .WithAuthor($"{userName}'s Top 10 {chartType}, {chartPeriod}", null, userIcon);
 
     embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
     {
-      Url = topTrackAlbumCover
+      Url = topItemImage
     };
 
     return BuildEmbed(embed);

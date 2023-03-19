@@ -156,7 +156,7 @@ public class General : BaseCommandModule
     }
     else
     {
-      await DisplayTopChart(ctx, method, resData);
+      await DisplayTopChart(ctx, method, period, resData);
     }
   }
 
@@ -164,6 +164,7 @@ public class General : BaseCommandModule
   (
     CommandContext ctx,
     string method,
+    string period,
     string resData
   )
   {
@@ -173,9 +174,19 @@ public class General : BaseCommandModule
 
     LastFM_User_TopTracks tracks = JsonConvert.DeserializeObject<LastFM_User_TopTracks>(resData);
 
+    string chartPeriod = "";
+
+    switch(period)
+    {
+      case "overall":
+        chartPeriod = "All Time";
+        break;
+    }
+
     switch (method)
     {
       case "user.gettoptracks":
+        string chartType = "Tracks";
         var track = tracks.toptracks.track;
 
         // Spotlight top track
@@ -210,11 +221,13 @@ public class General : BaseCommandModule
         await ctx.Channel.SendMessageAsync(em.SendTopTracks(
           userName,
           userIcon,
+          chartType,
+          chartPeriod,
           toptrack,
           topTrackAlbumCover,
           topTracksList
         ));
-        
+
         break;
     }
     
