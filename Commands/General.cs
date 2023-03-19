@@ -11,6 +11,10 @@ public class General : BaseCommandModule
   static readonly HttpClient client = new HttpClient();
   private const string lastfmURL = "http://ws.audioscrobbler.com/2.0/?method=";
 
+  /// <summary>
+  /// Method for making REST API calls with LastFM.
+  /// </summary>
+  /// <returns>The requested data, if call is successful.</returns>
   public async Task<string> RequestData
   (
     string method,
@@ -65,6 +69,9 @@ public class General : BaseCommandModule
     );
   }
 
+  #region Recent Tracks
+  // Recent tracks and currently playing/most recently scrobbled track
+
   [Command("nowplaying")]
   [Aliases("np")]
   public async Task RNowPlaying(CommandContext ctx)
@@ -117,20 +124,27 @@ public class General : BaseCommandModule
     }
   }
 
+  #endregion
+  
+  #region Top Charts
+
+  // Top Tracks
+  
   [Command("toptracks")]
   public async Task RTopTracks
   (
     CommandContext ctx,
-    string period = "1month"
+    string period = "overall"
   )
   {
     // Request data
     // Default arg is 10 tracks
 
+    string method = "user.gettoptracks";
 
     string resData = await RequestData
                            (
-                             "user.gettoptracks",
+                             method,
                              "tm206",
                              period
                            );
@@ -142,49 +156,69 @@ public class General : BaseCommandModule
     }
     else
     {
-      // Get user information
-      string userName = ctx.Message.Author.Username;
-      string userIcon = ctx.Message.Author.AvatarUrl;
-      
-      LastFM_User_TopTracks tracks = JsonConvert.DeserializeObject<LastFM_User_TopTracks>(resData);
-      var track = tracks.toptracks.track;
-
-      // Spotlight top track
-      string toptrack = $"**1\u0020|\u0020{track[0].name} \u2013 {track[0].artist.name}** ({track[0].playcount} plays)";
-
-      string topTrackAlbumCover = "";
-
-      foreach (var a in track[0].image)
-      {
-        topTrackAlbumCover = a.text;
-      }
-
-      // Get rest of tracks
-      List<string> topTracks = new List<string>();
-
-      for (int i = 1; i < 10; i++)
-      {
-        string title = $"**{i + 1}\u0020|\u0020{track[i].name} \u2013 {track[i].artist.name}** ({track[i].playcount} plays)";
-        topTracks.Add(title);
-      }
-
-      StringBuilder topTracksList = new StringBuilder();
-
-      foreach (var i in topTracks)
-      {
-        topTracksList.Append(i + "\n");
-      }
-
-      // Build embed
-      TopTracksEmbed em = new TopTracksEmbed();
-
-      await ctx.Channel.SendMessageAsync(em.SendTopTracks(
-        userName,
-        userIcon,
-        toptrack,
-        topTrackAlbumCover,
-        topTracksList
-      ));
+      await DisplayTopChart(ctx, method, resData);
     }
   }
+
+  public async Task DisplayTopChart
+  (
+    CommandContext ctx,
+    string method,
+    string resData
+  )
+  {
+    // Get user information
+    string userName = ctx.Message.Author.Username;
+    string userIcon = ctx.Message.Author.AvatarUrl;
+
+    LastFM_User_TopTracks tracks = JsonConvert.DeserializeObject<LastFM_User_TopTracks>(resData);
+
+    switch (method)
+    {
+      case "user.gettoptracks":
+        var track = tracks.toptracks.track;
+
+        // Spotlight top track
+        string toptrack = $"**1\u0020|\u0020{track[0].name} \u2013 {track[0].artist.name}** ({track[0].playcount} plays)";
+
+        string topTrackAlbumCover = "";
+
+        foreach (var a in track[0].image)
+        {
+          topTrackAlbumCover = a.text;
+        }
+
+        // Get rest of tracks
+        List<string> topTracks = new List<string>();
+
+        for (int i = 1; i < 10; i++)
+        {
+          string title = $"**{i + 1}\u0020|\u0020{track[i].name} \u2013 {track[i].artist.name}** ({track[i].playcount} plays)";
+          topTracks.Add(title);
+        }
+
+        StringBuilder topTracksList = new StringBuilder();
+
+        foreach (var i in topTracks)
+        {
+          topTracksList.Append(i + "\n");
+        }
+
+        // Build embed
+        TopTracksEmbed em = new TopTracksEmbed();
+
+        await ctx.Channel.SendMessageAsync(em.SendTopTracks(
+          userName,
+          userIcon,
+          toptrack,
+          topTrackAlbumCover,
+          topTracksList
+        ));
+        
+        break;
+    }
+    
+  }
+
+  #endregion
 }
