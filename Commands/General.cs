@@ -14,7 +14,8 @@ public class General : BaseCommandModule
   public async Task<string> RequestData
   (
     string method,
-    string user
+    string user,
+    string period
   )
   {
     // Get API key
@@ -27,6 +28,7 @@ public class General : BaseCommandModule
     var param = HttpUtility.ParseQueryString(string.Empty);
     param["method"] = method;
     param["user"] = user;
+    param["period"] = period;
     param["api_key"] = lastfmKey.apiKey.lastfm;
     param["format"] = "json";
 
@@ -71,7 +73,8 @@ public class General : BaseCommandModule
     string resData = await RequestData
                            (
                             "user.getrecenttracks",
-                            "tm206"
+                            "tm206",
+                            "1month"
                            );
     
     // Display data
@@ -115,14 +118,21 @@ public class General : BaseCommandModule
   }
 
   [Command("toptracks")]
-  public async Task RTopTracks(CommandContext ctx)
+  public async Task RTopTracks
+  (
+    CommandContext ctx,
+    string period = "1month"
+  )
   {
     // Request data
     // Default arg is 10 tracks
+
+
     string resData = await RequestData
                            (
                              "user.gettoptracks",
-                             "tm206"
+                             "tm206",
+                             period
                            );
 
     // Display data
