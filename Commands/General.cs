@@ -208,7 +208,7 @@ public class General : BaseCommandModule
     }
     else
     {
-      await DisplayTopChart(ctx, method, userPeriod, resData);
+      await DisplayTopChart(ctx, method, setPeriod, resData);
     }
   }
 
@@ -228,10 +228,27 @@ public class General : BaseCommandModule
 
     string chartPeriod = "";
 
+    // overall | 7day | 1month | 3month | 6month | 12month
+
     switch(period)
     {
       case "overall":
         chartPeriod = "All Time";
+        break;
+      case "7day":
+        chartPeriod = "Last Week";
+        break;
+      case "1month":
+        chartPeriod = "Last Month";
+        break;
+      case "3month":
+        chartPeriod = "Last 3 Months";
+        break;
+      case "6month":
+        chartPeriod = "Last Half Year";
+        break;
+      case "12month":
+        chartPeriod = "Last Year";
         break;
     }
 
