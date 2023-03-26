@@ -11,6 +11,8 @@ public class General : BaseCommandModule
   static readonly HttpClient client = new HttpClient();
   private const string lastfmURL = "http://ws.audioscrobbler.com/2.0/?method=";
 
+  #region Non-Command Methods
+
   /// <summary>
   /// Method for making REST API calls with LastFM.
   /// </summary>
@@ -59,6 +61,52 @@ public class General : BaseCommandModule
 
     return await Task.FromResult(resData);
   }
+
+  /// <summary>
+  /// Sets the period for API call given user argument
+  /// </summary>
+  /// <param name="userPeriod"></param>
+  /// <returns></returns>
+  public async Task<string> SetPeriod
+  (
+    string userPeriod
+  )
+  {
+    // Options are overall | 7day | 1month | 3month | 6month | 12month
+
+    string setPeriod = "";
+    switch (userPeriod)
+    {
+      case "7d":
+        setPeriod = "7d";
+        break;
+      case "1m":
+      case "1mo":
+        setPeriod = "1month";
+        break;
+      case "3m":
+      case "3mo":
+        setPeriod = "3month";
+        break;
+      case "6m":
+      case "6mo":
+        setPeriod = "6month";
+        break;
+      case "12m":
+      case "1y":
+      case "1yr":
+        setPeriod = "12month";
+        break;
+      default:
+      // Unknown or no argument given; default to overall
+        setPeriod = "overall";
+        break;
+    }
+
+    return await Task.FromResult(setPeriod);
+  }
+
+  #endregion
 
   [Command("greet")]
   public async Task RGreet(CommandContext ctx)
@@ -134,9 +182,13 @@ public class General : BaseCommandModule
   public async Task RTopTracks
   (
     CommandContext ctx,
-    string period = "overall"
+    string userPeriod = "overall"
   )
   {
+    // Set period
+    // (if provided by user; default is overall)
+    string setPeriod = await SetPeriod(userPeriod);
+
     // Request data
     // Default arg is 10 tracks
 
@@ -146,7 +198,7 @@ public class General : BaseCommandModule
                            (
                              method,
                              "tm206",
-                             period
+                             setPeriod
                            );
 
     // Display data
@@ -156,7 +208,7 @@ public class General : BaseCommandModule
     }
     else
     {
-      await DisplayTopChart(ctx, method, period, resData);
+      await DisplayTopChart(ctx, method, userPeriod, resData);
     }
   }
 
