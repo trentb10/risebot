@@ -9,7 +9,7 @@ public class General : BaseCommandModule
 {
 
   static readonly HttpClient client = new HttpClient();
-  private const string lastfmURL = "http://ws.audioscrobbler.com/2.0/?method=";
+  private const string lastfmURL = "http://ws.audioscrobbler.com/2.0/";
 
   #region Non-Command Methods
 
