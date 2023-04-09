@@ -172,6 +172,64 @@ public class General : BaseCommandModule
     }
   }
 
+  [Command("recent")]
+  [Aliases("rp")]
+  public async Task RRecentlyPlayed
+  (
+    CommandContext ctx,
+    string numberOfTracks = "5"
+  )
+  {
+    // Request data
+    string resData = await RequestData
+                           (
+                            "user.getrecenttracks",
+                            "tm206",
+                            "1month"
+                           );
+
+    // Display data
+    if (resData == "FAILED")
+    {
+      await ctx.Channel.SendMessageAsync("Something went wrong...");
+    }
+    else
+    {
+      // Get user information
+      string userName = ctx.Message.Author.Username;
+      string userIcon = ctx.Message.Author.AvatarUrl;
+      
+      // Get recent tracks
+      LastFM_User_RecentTracks tracks = JsonConvert.DeserializeObject<LastFM_User_RecentTracks>(resData);
+      var track = tracks.recenttracks.track;
+      
+      // Get number of tracks based on given argument. Default is 10
+      if (Int32.TryParse(numberOfTracks, out int n))
+      {
+        List<string> recentTracks = new List<string>();
+
+        for (int i = 1; i < Int32.Parse(numberOfTracks); i++)
+        {
+          string title = $"**{i + 1}\u0020|\u0020{track[i].name} \u2013 {track[i].artist.text}\n{track[i].date.text}**\n";
+          recentTracks.Add(title);
+        }
+
+        StringBuilder recentTracksList = new StringBuilder();
+
+        foreach (var t in recentTracks)
+        {
+          recentTracksList.Append(t);
+        }
+
+        await ctx.Channel.SendMessageAsync(recentTracksList.ToString());
+      }
+      else
+      {
+        // failed to parse
+      }
+    }
+  }
+
   #endregion
   
   #region Top Charts
