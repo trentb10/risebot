@@ -208,13 +208,18 @@ public class General : BaseCommandModule
       {
         List<string> recentTracks = new List<string>();
 
+        // Get most recent track
+        string lastPlayed = $"**1\u0020|\u0020{track[0].name} \u2013 {track[0].artist.text}**\nScrobbled <t:{track[0].date.uts}:R>\n\n";
+        
         for (int i = 1; i < Int32.Parse(numberOfTracks); i++)
         {
-          string title = $"**{i + 1}\u0020|\u0020{track[i].name} \u2013 {track[i].artist.text}\n{track[i].date.text}**\n";
+          string title = $"**{i + 1}\u0020|\u0020{track[i].name} \u2013 {track[i].artist.text}**\nScrobbled <t:{track[i].date.uts}:R>\n\n";
           recentTracks.Add(title);
         }
 
         StringBuilder recentTracksList = new StringBuilder();
+
+        recentTracksList.Append(lastPlayed);
 
         foreach (var t in recentTracks)
         {
