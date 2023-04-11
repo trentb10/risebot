@@ -177,7 +177,7 @@ public class General : BaseCommandModule
   public async Task RRecentlyPlayed
   (
     CommandContext ctx,
-    string numberOfTracks = "5"
+    string numberOfTracks = "10"
   )
   {
     // Request data
@@ -209,24 +209,39 @@ public class General : BaseCommandModule
         List<string> recentTracks = new List<string>();
 
         // Get most recent track
-        string lastPlayed = $"**1\u0020|\u0020{track[0].name} \u2013 {track[0].artist.text}**\nScrobbled <t:{track[0].date.uts}:R>\n\n";
+        string lastPlayed = $"**{track[0].name} \u2013 {track[0].artist.text}** (<t:{track[0].date.uts}:R>)";
+        
+        string lastPlayedAlbumCover = "";
+
+        foreach (var a in track[0].image)
+        {
+          lastPlayedAlbumCover = a.text;
+        }
         
         for (int i = 1; i < Int32.Parse(numberOfTracks); i++)
         {
-          string title = $"**{i + 1}\u0020|\u0020{track[i].name} \u2013 {track[i].artist.text}**\nScrobbled <t:{track[i].date.uts}:R>\n\n";
+          string title = $"**{track[i].name}**\u0020\u2013\u0020{track[i].artist.text} (<t:{track[i].date.uts}:R>)";
           recentTracks.Add(title);
         }
 
         StringBuilder recentTracksList = new StringBuilder();
 
-        recentTracksList.Append(lastPlayed);
-
         foreach (var t in recentTracks)
         {
-          recentTracksList.Append(t);
+          recentTracksList.Append(t + "\n");
         }
 
-        await ctx.Channel.SendMessageAsync(recentTracksList.ToString());
+        // Build embed
+        RecentTracksEmbed em = new RecentTracksEmbed();
+
+        await ctx.Channel.SendMessageAsync(em.SendRecentTracks(
+          userName,
+          userIcon,
+          numberOfTracks,
+          lastPlayed,
+          lastPlayedAlbumCover,
+          recentTracksList
+        ));
       }
       else
       {

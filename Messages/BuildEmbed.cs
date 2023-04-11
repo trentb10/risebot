@@ -83,3 +83,33 @@ public class TopTracksEmbed : Embed
     return BuildEmbed(embed);
   }
 }
+
+public class RecentTracksEmbed : Embed
+{
+  public DiscordEmbedBuilder SendRecentTracks
+  (
+    string userName,
+    string userIcon,
+    string numberOfItems,
+    string topItemTitle,
+    string topItemImage,
+    StringBuilder recentlyPlayedList
+  ){
+    DiscordEmbedBuilder embed = new DiscordEmbedBuilder
+    {
+      // Spotlight top item
+      Title = topItemTitle,
+
+      // List rest of chart
+      Description = recentlyPlayedList.ToString()
+    }
+      .WithAuthor($"{userName}'s Recently Played, Last {numberOfItems} Tracks", null, userIcon);
+
+    embed.Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
+    {
+      Url = topItemImage
+    };
+
+    return BuildEmbed(embed);
+  }
+}
